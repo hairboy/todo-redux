@@ -1,33 +1,42 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { taskDelete, toggleTask } from '../../store/main/main.actions';
 
-export default class Task extends Component {
+class Task extends Component {
 
   deleteTask = () => {
-    const{ deleteTask, id } = this.props
-
-    deleteTask(id)
+    const {  dispatch, id } = this.props
+    
+      if (id) {
+        dispatch(taskDelete(id))
+      }
+    
   }
   
   checkTask = () => {
-    const{ checkedTask, id, isChecked } = this.props
+    const { dispatch, id, isChecked } = this.props
 
-    checkedTask(id, isChecked)
+    if (id) {
+      dispatch(toggleTask(id, isChecked))
+    } 
   }
 
   
   render() {
     const { content, isChecked } = this.props;
 
-    
-    
+      
+      
     return (
       <div>
         {content} 
         <input 
           type='checkbox' 
-          onChange={this.checkTask} 
-          checked={isChecked}  /> 
+          checked={isChecked}
+          onChange={this.checkTask}
+          
+          /> 
         <Button 
           variant="outline-secondary" 
           onClick={this.deleteTask}>
@@ -38,3 +47,5 @@ export default class Task extends Component {
   }
 
 }
+
+export const ConnectedTask = connect(null, dispatch => ({ dispatch }))(Task) 

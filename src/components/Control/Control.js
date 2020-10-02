@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { taskAdd } from '../../store/main/main.actions';
+import { taskAdd, deleteAll, setFilter } from '../../store/main/main.actions';
 
 class Control extends Component {
 
@@ -32,14 +32,21 @@ class Control extends Component {
     }
   }
 
-  handleFilterType = (e) => {
-    const { setFilter } = this.props
+  handleDeleteAllTask = (task) => {
+    const { dispatch } = this.props
 
-    setFilter(e.target.value)
+    if (task){
+      dispatch(deleteAll(task))
+    }
+  }
+
+  handleFilterType = (e) => {
+    const { dispatch } = this.props
+
+    dispatch(setFilter(e.target.value))
   }
 
   render() {
-    const { deleteAllTasks } = this.props
     return(
       <div >
         <input
@@ -59,7 +66,7 @@ class Control extends Component {
         <Button 
           variant="outline-primary"
           className='clear-button'
-          onClick={deleteAllTasks}>
+          onClick={this.handleDeleteAllTask}>
             Delete all
         </Button>
         <select onChange={this.handleFilterType}
